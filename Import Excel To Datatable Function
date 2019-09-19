@@ -1,0 +1,25 @@
+Public Function ImportExcelToTable(ByVal FileName As String) As DataTable
+
+Try
+
+Dim conn As OleDbConnection conn = New OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source="+ FileName + ";Extended Properties=Excel 8.0;")
+
+Dim dta As OleDbDataAdapter = New OleDbDataAdapter("select * from [Sheet1$]", conn)
+
+dta.TableMappings.Add("Table", "TTable")
+
+Dim dts As DataSet = New DataSet dta.Fill(dts, "[Sheet1$]") 
+
+conn.Close() 
+
+Return dts.Tables(0)
+
+Catch ex As Exception
+
+MsgBox("Import Failed", MsgBoxStyle.Critical)
+
+End Try
+
+Return Nothing
+
+End Function
